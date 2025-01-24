@@ -5,21 +5,58 @@
 
 
 trigger:
-- main
+
+- master
+
 
 pool:
+
+
   vmImage: 'ubuntu-latest'
 
+
+strategy:
+
+
+  matrix:
+
+
+    Python27:
+
+
+      python.version: '2.7'
+
+
+
 steps:
+
+
 - task: UsePythonVersion@0
+
+
   inputs:
-    versionSpec: '3.x'
-    addToPath: true
 
-- script: |
-    python --version
-    python add.py
-  displayName: 'Run Python Script'
 
-- script: echo "Pipeline completed successfully!"
-  displayName: 'Final Step'
+    versionSpec: '$(python.version)'
+
+
+  displayName: 'Use Python $(python.version)'
+
+
+- script: python "pythonpro.py"
+
+
+
+- task: PythonScript@0
+
+
+  inputs:
+
+
+    scriptSource: 'inline'
+
+
+    script: |
+      print('AZURE PIPELINE')
+      print('CONTINUOUS INTEGRATION & CONTINUOUS DEPLOYMENT')
+
